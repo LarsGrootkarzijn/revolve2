@@ -10,8 +10,8 @@ from revolve2.modular_robot_simulation import ModularRobotScene, simulate_scenes
 from revolve2.simulators.mujoco_simulator import LocalSimulator
 from revolve2.standards import terrains
 from revolve2.standards.simulation_parameters import make_standard_batch_parameters
-
-
+from revolve2.standards import fitness_functions, modular_robots_v2, terrains
+import numpy as np
 def make_body() -> (
     tuple[BodyV2, ActiveHingeV2, ActiveHingeV2, ActiveHingeV2, ActiveHingeV2]
 ):
@@ -21,22 +21,39 @@ def make_body() -> (
     :returns: The created body and references to each hinge: first_left_active_hinge, second_left_active_hinge, first_right_active_hinge, second_right_active_hinge.
     """
     body = BodyV2()
-    first_left_active_hinge = ActiveHingeV2(RightAngles.DEG_0)
-    second_left_active_hinge = ActiveHingeV2(RightAngles.DEG_0)
-    first_right_active_hinge = ActiveHingeV2(RightAngles.DEG_0)
-    second_right_active_hinge = ActiveHingeV2(RightAngles.DEG_0)
-    body.core_v2.left_face.bottom = first_left_active_hinge
-    first_left_active_hinge.attachment = second_left_active_hinge
-    second_left_active_hinge.attachment = BrickV2(RightAngles.DEG_0)
-    body.core_v2.right_face.bottom = first_right_active_hinge
-    first_right_active_hinge.attachment = second_right_active_hinge
-    second_right_active_hinge.attachment = BrickV2(RightAngles.DEG_0)
+    first_left_active_hinge = ActiveHingeV2(0.0)
+    second_left_active_hinge = ActiveHingeV2(0.0)
+    first_right_active_hinge = ActiveHingeV2(0.0)
+    second_right_active_hinge = ActiveHingeV2(0.0)
+    rear_active_hinge_1 = ActiveHingeV2(np.pi / 2.0)
+    rear_active_hinge_2 = ActiveHingeV2(np.pi / 2.0)
+    
+    body.core_v2.left_face.bottom = first_right_active_hinge
+    first_left_active_hinge.attachment = BrickV2(0.0)
+
+    body.core_v2.right_face.bottom = first_left_active_hinge
+    first_right_active_hinge.attachment = BrickV2(0.0)
+
+    body.core_v2.back_face.bottom = rear_active_hinge_1
+    rear_active_hinge_1.attachment = BrickV2(-np.pi / 2.0)
+
+    body.core_v2.back_face.bottom.attachment.front = rear_active_hinge_2
+    body.core_v2.back_face.bottom.attachment.front.attachment = BrickV2(-np.pi / 2.0)
+
+    body.core_v2.back_face.bottom.attachment.front.attachment.left = second_left_active_hinge
+    body.core_v2.back_face.bottom.attachment.front.attachment.right = second_right_active_hinge
+
+    second_right_active_hinge.attachment = BrickV2(0.0)
+    second_left_active_hinge.attachment = BrickV2(0.0)
+
     return (
         body,
         first_left_active_hinge,
         second_left_active_hinge,
         first_right_active_hinge,
         second_right_active_hinge,
+        rear_active_hinge_1,
+        rear_active_hinge_2,
     )
 
 
@@ -51,6 +68,8 @@ class CustomBrainInstance(BrainInstance):
     second_left_active_hinge: ActiveHingeV2
     first_right_active_hinge: ActiveHingeV2
     second_right_active_hinge: ActiveHingeV2
+    rear_active_hinge_1: ActiveHingeV2
+    rear_active_hinge_2: ActiveHingeV2
 
     def __init__(
         self,
@@ -58,6 +77,14 @@ class CustomBrainInstance(BrainInstance):
         second_left_active_hinge: ActiveHingeV2,
         first_right_active_hinge: ActiveHingeV2,
         second_right_active_hinge: ActiveHingeV2,
+        rear_active_hinge_1: ActiveHingeV2,
+        rear_active_hinge_2: ActiveHingeV2,
+        first_left_value = 0.9,
+        second_left_value = -0.9,
+        first_right_value = -0.9,
+        second_right_value = 0.9,
+        rear_value_1 = 0.2,
+        rear_value_2 = -0.2,
     ) -> None:
         """
         Initialize the Custom Brain Instance.
@@ -71,7 +98,14 @@ class CustomBrainInstance(BrainInstance):
         self.second_left_active_hinge = second_left_active_hinge
         self.first_right_active_hinge = first_right_active_hinge
         self.second_right_active_hinge = second_right_active_hinge
-
+        self.rear_active_hinge_1 = rear_active_hinge_1
+        self.rear_active_hinge_2 = rear_active_hinge_2
+        self.first_left_value = 0.9
+        self.second_left_value = -0.9
+        self.first_right_value = -0.9
+        self.second_right_value = 0.9
+        self.rear_value_1 = 0.2
+        self.rear_value_2 = -0.2
     def control(
         self,
         dt: float,
@@ -85,10 +119,20 @@ class CustomBrainInstance(BrainInstance):
         :param sensor_state: Interface for reading the current sensor state.
         :param control_interface: Interface for controlling the robot.
         """
-        control_interface.set_active_hinge_target(self.first_left_active_hinge, 1.0)
-        control_interface.set_active_hinge_target(self.second_left_active_hinge, 0.0)
-        control_interface.set_active_hinge_target(self.first_right_active_hinge, 0.0)
-        control_interface.set_active_hinge_target(self.second_right_active_hinge, -1.0)
+        self.first_left_value *= -1
+        self.second_left_value *= -1
+        self.first_right_value *= -1
+        self.second_right_value *= -1
+        self.rear_value_1 *= -1
+        self.rear_value_2 *= -1
+        control_interface.set_active_hinge_target(self.first_left_active_hinge, self.first_left_value)
+        control_interface.set_active_hinge_target(self.second_left_active_hinge, self.second_left_value)
+        control_interface.set_active_hinge_target(self.first_right_active_hinge, self.first_right_value)
+        control_interface.set_active_hinge_target(self.second_right_active_hinge, self.second_right_value)
+        control_interface.set_active_hinge_target(self.rear_active_hinge_1, self.rear_value_1)
+        control_interface.set_active_hinge_target(self.rear_active_hinge_2, self.rear_value_2)
+
+        
 
 
 class CustomBrain(Brain):
@@ -103,13 +147,17 @@ class CustomBrain(Brain):
     second_left_active_hinge: ActiveHingeV2
     first_right_active_hinge: ActiveHingeV2
     second_right_active_hinge: ActiveHingeV2
-
+    rear_active_hinge_1: ActiveHingeV2
+    rear_active_hinge_2: ActiveHingeV2
+    
     def __init__(
         self,
         first_left_active_hinge: ActiveHingeV2,
         second_left_active_hinge: ActiveHingeV2,
         first_right_active_hinge: ActiveHingeV2,
         second_right_active_hinge: ActiveHingeV2,
+        rear_active_hinge_1: ActiveHingeV2,
+        rear_active_hinge_2: ActiveHingeV2,
     ) -> None:
         """
         Initialize the Custom Brain.
@@ -123,6 +171,8 @@ class CustomBrain(Brain):
         self.second_left_active_hinge = second_left_active_hinge
         self.first_right_active_hinge = first_right_active_hinge
         self.second_right_active_hinge = second_right_active_hinge
+        self.rear_active_hinge_1 = rear_active_hinge_1
+        self.rear_active_hinge_2 = rear_active_hinge_2
 
     def make_instance(self) -> BrainInstance:
         """
@@ -135,6 +185,8 @@ class CustomBrain(Brain):
             self.second_left_active_hinge,
             self.first_right_active_hinge,
             self.second_right_active_hinge,
+            self.rear_active_hinge_1,
+            self.rear_active_hinge_2,
         )
 
 
@@ -150,6 +202,8 @@ def main() -> None:
         second_left_active_hinge,
         first_right_active_hinge,
         second_right_active_hinge,
+        rear_active_hinge_1,
+        rear_active_hinge_2,
     ) = make_body()
 
     # Create the custom brain for the robot.
@@ -158,9 +212,11 @@ def main() -> None:
         second_left_active_hinge,
         first_right_active_hinge,
         second_right_active_hinge,
+        rear_active_hinge_1,
+        rear_active_hinge_2,
     )
 
-    # Combine the body and brain into a modular robot.
+    # Combine the body and brain into a moduflar robot.
     robot = ModularRobot(body, brain)
 
     # Create the scene.

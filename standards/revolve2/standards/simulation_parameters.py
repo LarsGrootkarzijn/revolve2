@@ -5,7 +5,7 @@ from revolve2.simulation.simulator import BatchParameters
 STANDARD_SIMULATION_TIME = 30
 STANDARD_SAMPLING_FREQUENCY = 5
 STANDARD_SIMULATION_TIMESTEP = 0.001
-STANDARD_CONTROL_FREQUENCY = 20
+STANDARD_CONTROL_FREQUENCY = 2
 
 
 def make_standard_batch_parameters(
