@@ -7,7 +7,7 @@ from new_sim import simulation
 #config
 pop_size = 200
 max_generation = 1500
-geno_length = 14
+geno_length = 6
 simulation_time = 300
 survival_rate = 0.5
 mutation_rate = 0.15
@@ -59,17 +59,17 @@ def create_children(parent_list):
                 match_list = parent_list.copy()
                 match_list.remove((internal,external))
                 match = random.sample(match_list,1)[0]
-                if internal != match[0]:
-                        #internal
-                        child_1 = cross_over(internal,match[0])
-                        if random.random() < mutation_rate:
-                                child_1 = mutation(child_1)
-                        #external
-                        child_2 = cross_over(external,match[1])
-                        if random.random() < mutation_rate:
-                                child_2 = mutation(child_2)
+                # if internal != match[0]:
+                #internal
+                child_1 = cross_over(internal,match[0])
+                if random.random() < mutation_rate:
+                        child_1 = mutation(child_1)
+                #external
+                child_2 = cross_over(external,match[1])
+                if random.random() < mutation_rate:
+                        child_2 = mutation(child_2)
 
-                        child = (child_1,child_2)
+                child = (child_1,child_2)
 
 
                 child_list.append(child)
