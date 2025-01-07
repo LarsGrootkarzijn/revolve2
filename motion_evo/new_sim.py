@@ -18,8 +18,8 @@ from revolve2.simulators.mujoco_simulator import LocalSimulator
 from revolve2.standards import terrains, fitness_functions
 from revolve2.standards.interactive_objects import Ball
 from revolve2.standards.simulation_parameters import make_standard_batch_parameters
-import revolve2.examples.own.main.CustomBrain
-from .examples.own.main import make_body as new_body
+import main.CustomBrain
+from main import make_body as new_body
 from remote import creat_barin
 
 
