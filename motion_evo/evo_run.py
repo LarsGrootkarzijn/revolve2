@@ -41,7 +41,6 @@ def parent_selection(population):
         if current_best not in parent_list:
             parent_list.append(current_best)
         while len(parent_list) < int(pop_size*survival_rate):
-                now = len(parent_list)
                 team = random.sample(fitness_list,10)
                 winner_index = fitness_list.index(min(team))
                 winner = population[winner_index]
