@@ -35,15 +35,20 @@ def parent_selection(population):
                         fitness_list.append(j)
                 counter += parallel_num
                 print(f"this is {counter}-th individual.")
-        while len(parent_list) < int(len(population)*survival_rate):
-                
-                team = random.sample(fitness_list,10)
-                winner = fitness_list.index(min(team))
-                if population[winner] not in parent_list:
-                        parent_list.append(population[winner])
+                print(len(population))
+        pop_size = len(population)
         current_best = population[fitness_list.index(min(fitness_list))]
         if current_best not in parent_list:
-                parent_list.append(current_best)
+            parent_list.append(current_best)
+        while len(parent_list) < int(pop_size*survival_rate):
+                now = len(parent_list)
+                team = random.sample(fitness_list,10)
+                winner_index = fitness_list.index(min(team))
+                winner = population[winner_index]
+                del population[winner_index]
+                del fitness_list[winner_index]
+                if winner not in parent_list:
+                        parent_list.append(winner)
         #output the parents and the best one in this generation
         return parent_list, (min(fitness_list),current_best),sum(fitness_list)/len(fitness_list)
 
@@ -140,6 +145,7 @@ if __name__ == "__main__":
                     f.write(f"round {i}  average_fit {str(avg)}  \n")
             child_list = create_children(parent_list)
             population = parent_list + child_list
+            # print(len(population))
             with open("save_pop", "w") as f:
                 f.write(f"round {i} \n population:\n {population} ")
 
