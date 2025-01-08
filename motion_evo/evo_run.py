@@ -3,6 +3,7 @@ import time
 
 import random
 from new_sim import simulation
+import numpy as np
 
 #config
 pop_size = 200
@@ -41,6 +42,7 @@ def parent_selection(population):
         if current_best not in parent_list:
             parent_list.append(current_best)
         while len(parent_list) < int(pop_size*survival_rate):
+                now = len(parent_list)
                 team = random.sample(fitness_list,10)
                 winner_index = fitness_list.index(min(team))
                 winner = population[winner_index]
@@ -113,6 +115,31 @@ def load_pop():
 
             if "round" in i:
                     round = int(i[6:-1])
+
+        # make is hashable
+        unique_list = list({tuple((tuple(item[0]), tuple(item[1]))) for item in population})
+
+        unique_length = len(unique_list)
+
+
+
+        #check same individual
+        if len(population) != unique_length:
+            print(f"There are {len(population) - unique_length} repeated individual found")
+
+            #back to original format
+            unique_list = [([*item[0]], [*item[1]]) for item in unique_list]
+
+            for i in range(pop_size - unique_length):
+                sample = random.sample(unique_list, 1)[0]
+
+                new_individual = ([],[])
+                for para1,para2 in zip(sample[0],sample[1]):
+                    new_para1 = np.random.normal(loc=para1, scale=1.0, size=None)
+                    new_individual[0].append(new_para1)
+                    new_para2 = np.random.normal(loc=para2, scale=1.0, size=None)
+                    new_individual[1].append(new_para2)
+
         return population,round
 
 
@@ -124,7 +151,7 @@ if __name__ == "__main__":
     '''This parameter to decide whether we want to load population from local or not, 
     Change it to True if you want to load'''
 
-    load = False
+    load = True
 
     if load:
         population,round = load_pop()
