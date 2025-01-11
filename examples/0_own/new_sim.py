@@ -19,104 +19,9 @@ from revolve2.standards import terrains, fitness_functions
 from revolve2.standards.interactive_objects import Ball
 from revolve2.standards.simulation_parameters import make_standard_batch_parameters
 from main import CustomBrain
+from main import make_body as new_body
+from remote import creat_barin
 
-
-##body1 Gecko
-# def make_body() -> BodyV2:
-#
-#     # A modular robot body follows a 'tree' structure.
-#     # The 'Body' class automatically creates a center 'core'.
-#     # From here, other modular can be attached.
-#     # Modules can be attached in a rotated fashion.
-#     # This can be any angle, although the original design takes into account only multiples of 90 degrees.
-#     # You should explore the "standards" module as it contains lots of preimplemented elements you can use!
-#     body = BodyV2()
-#     body.core_v2.left_face.bottom = ActiveHingeV2(RightAngles.DEG_0)
-#     body.core_v2.left_face.bottom.attachment = ActiveHingeV2(RightAngles.DEG_0)
-#     body.core_v2.left_face.bottom.attachment.attachment = BrickV2(RightAngles.DEG_0)
-#     body.core_v2.right_face.bottom = ActiveHingeV2(RightAngles.DEG_0)
-#     body.core_v2.right_face.bottom.attachment = ActiveHingeV2(RightAngles.DEG_0)
-#     body.core_v2.right_face.bottom.attachment.attachment = BrickV2(RightAngles.DEG_0)
-#
-#     #back1
-#     body.core_v2.back_face.bottom = ActiveHingeV2(RightAngles.DEG_0)
-#     # body.core_v2.back_face.bottom.attachment = ActiveHingeV2(RightAngles.DEG_0)
-#     body.core_v2.back_face.bottom.attachment = BrickV2(RightAngles.DEG_0)
-#
-#     #back2
-#     body.core_v2.back_face.bottom.attachment.front = ActiveHingeV2(RightAngles.DEG_0)
-#     body.core_v2.back_face.bottom.attachment.front.attachment = BrickV2(RightAngles.DEG_0)
-#
-#     #back left
-#     body.core_v2.back_face.bottom.attachment.front.attachment.left = ActiveHingeV2(RightAngles.DEG_0)
-#     body.core_v2.back_face.bottom.attachment.front.attachment.left.attachment = ActiveHingeV2(RightAngles.DEG_0)
-#     body.core_v2.back_face.bottom.attachment.front.attachment.left.attachment.attachment = BrickV2(RightAngles.DEG_0)
-#
-#     #back right
-#     body.core_v2.back_face.bottom.attachment.front.attachment.right = ActiveHingeV2(
-#         RightAngles.DEG_0)
-#     body.core_v2.back_face.bottom.attachment.front.attachment.right.attachment = ActiveHingeV2(
-#         RightAngles.DEG_0)
-#     body.core_v2.back_face.bottom.attachment.front.attachment.right.attachment.attachment = BrickV2(
-#         RightAngles.DEG_0)
-#
-#     return body
-
-#body2 spider
-
-def make_body() -> BodyV2:
-
-    # A modular robot body follows a 'tree' structure.
-    # The 'Body' class automatically creates a center 'core'.
-    # From here, other modular can be attached.
-    # Modules can be attached in a rotated fashion.
-    # This can be any angle, although the original design takes into account only multiples of 90 degrees.
-    # You should explore the "standards" module as it contains lots of preimplemented elements you can use!
-    body = BodyV2()
-    body.core_v2.left_face.bottom = ActiveHingeV2(RightAngles.DEG_0)
-    # body.core_v2.left_face.bottom.attachment = ActiveHingeV2(RightAngles.DEG_0)
-    body.core_v2.left_face.bottom.attachment = BrickV2(RightAngles.DEG_0)
-    body.core_v2.right_face.bottom = ActiveHingeV2(RightAngles.DEG_0)
-    # body.core_v2.right_face.bottom.attachment = ActiveHingeV2(RightAngles.DEG_0)
-    body.core_v2.right_face.bottom.attachment = BrickV2(RightAngles.DEG_0)
-
-    #front1
-    body.core_v2.front_face.bottom = ActiveHingeV2(RightAngles.DEG_90)
-    # body.core_v2.front_face.bottom.attachment = ActiveHingeV2(RightAngles.DEG_0)
-    # body.core_v2.front_face.bottom.attachment = BrickV2(RightAngles.DEG_90)
-    # #front left
-    # body.core_v2.front_face.bottom.attachment.left = ActiveHingeV2(RightAngles.DEG_0)
-    # # body.core_v2.front_face.bottom.attachment.left.attachment = ActiveHingeV2(RightAngles.DEG_0)
-    # body.core_v2.front_face.bottom.attachment.left.attachment = BrickV2(RightAngles.DEG_0)
-    # #front right
-    # body.core_v2.front_face.bottom.attachment.right = ActiveHingeV2(
-    #     RightAngles.DEG_0)
-    # # body.core_v2.front_face.bottom.attachment.right.attachment = ActiveHingeV2(
-    # #     RightAngles.DEG_0)
-    # body.core_v2.front_face.bottom.attachment.right.attachment = BrickV2(
-    #     RightAngles.DEG_0)
-
-    #back1
-    body.core_v2.back_face.bottom = ActiveHingeV2(RightAngles.DEG_90)
-    # body.core_v2.back_face.bottom.attachment = ActiveHingeV2(RightAngles.DEG_0)
-    body.core_v2.back_face.bottom.attachment = BrickV2(RightAngles.DEG_90)
-    body.core_v2.back_face.bottom.attachment.front = ActiveHingeV2(RightAngles.DEG_90)
-    body.core_v2.back_face.bottom.attachment.front.attachment = BrickV2(RightAngles.DEG_90)
-
-    #back left
-    body.core_v2.back_face.bottom.attachment.front.attachment.left = ActiveHingeV2(RightAngles.DEG_0)
-    # body.core_v2.back_face.bottom.attachment.left.attachment = ActiveHingeV2(RightAngles.DEG_0)
-    body.core_v2.back_face.bottom.attachment.front.attachment.left.attachment = BrickV2(RightAngles.DEG_0)
-
-    #back right
-    body.core_v2.back_face.bottom.attachment.front.attachment.right = ActiveHingeV2(
-        RightAngles.DEG_0)
-    # body.core_v2.back_face.bottom.attachment.right.attachment = ActiveHingeV2(
-    #     RightAngles.DEG_0)
-    body.core_v2.back_face.bottom.attachment.front.attachment.right.attachment = BrickV2(
-        RightAngles.DEG_0)
-
-    return body
 
 
 class Brain(CustomBrain):
@@ -140,16 +45,15 @@ class Brain(CustomBrain):
     def make_instance(self):
         return CustomBrain(
          self.first_left_active_hinge,
-           self.second_left_active_hinge,
-           self.first_right_active_hinge,
-           self.second_right_active_hinge,
-           self.rear_active_hinge_1,
-           self.rear_active_hinge_2,
-            self.initial_state,
-            self.weight_matrix,
-            self.output_mapping
+         self.second_left_active_hinge,
+         self.first_right_active_hinge,
+         self.second_right_active_hinge,
+         self.rear_active_hinge_1,
+         self.rear_active_hinge_2,
+         self.initial_state,
+         self.weight_matrix,
+         self.output_mapping
         )
-
 
 def move_forward_fit( end_state,target_state = Vector3([-5, 0, 0])):
     #begin_position = begin_state.get_pose().position
@@ -194,7 +98,64 @@ def displacement_direction_fit(end_state,target_state = Vector3([-5, 0, 0]),star
     # make it all positive incase cancel each other's mistake
 
 
+def creat_barin(first_left_active_hinge,   #copy from remote due to import error
+        second_left_active_hinge,
+        first_right_active_hinge,
+        second_right_active_hinge,
+        rear_active_hinge_1,
+        rear_active_hinge_2,hinges,body,internal_weights, external_weights):
+    # get the hinges of the body we created
+    # active_hinges = body.find_modules_of_type(ActiveHinge)
+    # print("active",active_hinges)
+    # print(len(active_hinges))
+    # print("hinges",hinges)
+    # print(len(hinges))
+    # a = [i for i in active_hinges if i in hinges]
+    # print(a)
+    # print(len(a))
 
+
+    active_hinges = hinges
+
+    cpg_network_structure, output_mapping = active_hinges_to_cpg_network_structure_neighbor(active_hinges)
+
+    # initialize the network as uniform state.
+    initial_state = cpg_network_structure.make_uniform_state(
+        # 12
+        0.5 * math.sqrt(2)
+    )
+
+    '''connections = [
+        (
+            active_hinges[pair.cpg_index_lowest.index],
+            active_hinges[pair.cpg_index_highest.index],
+        )
+        for pair in cpg_network_structure.connections
+    ]'''
+
+    # (internal_weights, external_weights) = _make_weights(active_hinges, connections, body)
+    # internal_weights, external_weights =
+    weight_matrix = cpg_network_structure.make_connection_weights_matrix(
+        {
+            cpg: weight
+            for cpg, weight in zip(cpg_network_structure.cpgs, internal_weights)
+        },
+        {
+            pair: weight
+            for pair, weight in zip(
+            cpg_network_structure.connections, external_weights
+        )
+        },
+    )
+
+    brain = Brain(initial_state=initial_state, weight_matrix=weight_matrix, output_mapping=output_mapping,first_left_active_hinge = first_left_active_hinge,
+        second_left_active_hinge = second_left_active_hinge,
+        first_right_active_hinge = first_right_active_hinge,
+        second_right_active_hinge = second_right_active_hinge,
+        rear_active_hinge_1 = rear_active_hinge_1,
+        rear_active_hinge_2 = rear_active_hinge_2,)
+
+    return brain,active_hinges
 
 
 def simulation(weights_list,time,parallel_branches,evo = True) -> None:
@@ -210,57 +171,29 @@ def simulation(weights_list,time,parallel_branches,evo = True) -> None:
 
     robot_list = []
     for (internal_weights, external_weights) in weights_list:
-        body = make_body()
 
-        """
-        Here we create a brain for the robot.
-        We choose a 'CPG' brain with random parameters.
-        If you want to know more about CPGs checkout the Methods section in: https://doi.org/10.1038/s41598-023-48338-4.
-        """
+        (
+            body,
+            first_left_active_hinge,
+            second_left_active_hinge,
+            first_right_active_hinge,
+            second_right_active_hinge,
+            rear_active_hinge_1,
+            rear_active_hinge_2,
+        ) = new_body()
 
-        #get the hinges of the body we created
-        active_hinges = body.find_modules_of_type(ActiveHinge)
+        hinges = (
+        first_left_active_hinge, second_left_active_hinge, first_right_active_hinge, second_right_active_hinge,
+        rear_active_hinge_1, rear_active_hinge_2)
 
-        cpg_network_structure, output_mapping = active_hinges_to_cpg_network_structure_neighbor(active_hinges)
-
-        print("cpg_network_structure", cpg_network_structure)
-        print("out",output_mapping)
-
-        #initialize the network as uniform state.
-        initial_state = cpg_network_structure.make_uniform_state(
-            0.0
-            #0.5 * math.sqrt(2)
-        )
-
-
-        '''connections = [
-            (
-                active_hinges[pair.cpg_index_lowest.index],
-                active_hinges[pair.cpg_index_highest.index],
-            )
-            for pair in cpg_network_structure.connections
-        ]'''
-
-        #(internal_weights, external_weights) = _make_weights(active_hinges, connections, body)
-        #internal_weights, external_weights =
-        weight_matrix = cpg_network_structure.make_connection_weights_matrix(
-                {
-                    cpg: weight
-                    for cpg, weight in zip(cpg_network_structure.cpgs, internal_weights)
-                },
-                {
-                    pair: weight
-                    for pair, weight in zip(
-                        cpg_network_structure.connections, external_weights
-                    )
-                },
-            )
-
-        brain = Brain(initial_state,weight_matrix,output_mapping)
-        #print("test_4by4",brain.control())
-
-
-        """Once we have a body and a brain we combine it into a ModularRobot."""
+        brain, active_hinges = creat_barin(first_left_active_hinge,
+                                           second_left_active_hinge,
+                                           first_right_active_hinge,
+                                           second_right_active_hinge,
+                                           rear_active_hinge_1,
+                                           rear_active_hinge_2,
+                                           hinges,
+                                           body, internal_weights, external_weights)
         robot = ModularRobot(body, brain)
 
         robot_list.append(robot)
@@ -406,14 +339,16 @@ if __name__ == "__main__":
     #simulation([([0.816002062805131, 0.4353469928935958, 0.2118516270847115, -0.621570275559078, -0.8444706478559576, 0.2736896977536565, -0.8007414480806025, -0.7047053475657092, 0.1482386367291093, -0.3680757370422292, 0.6208080274316514, -0.9553958954579567, 0.5850293096889438, 0.5978412844320018], [0.4814190299013992, -0.9789783345349947, -0.4739805402353785, -0.5518335862862205, -0.6867416242074269, -0.95234226526636, -0.4014905246126286, -0.5871445846403809, -0.1285249622674871, 0.7902540512267304, -0.2666742152683277, -0.5904255818514315, -0.059665996223696505, -0.919175869647561])],300,1,False)
 
     #V3
-    #simulation([([-0.04976292924609016, -0.008724116725703501, -0.7401463485876545, 0.43248756833343904, 0.7759648831140185, -0.6537053670636204, 0.04338862477524952, -0.594996721108846, -0.6537827477092351, -0.9131426434515788, 0.7556205997920529, 0.7200206126711672, -0.2237007743778341, 0.4970605052959205], [-0.9821296478649486, 0.8040966148387343, 0.9909274790237597, -0.03161854960599442, -0.4721831659520046, 0.6284661469556723, -0.8899192467370087, 0.8093912845317912, -0.2761572403868311, 0.012674057177946452, 0.7727940742798518, 0.5628421161551613, -0.4264608164795147, -0.7169140492391144])],300,1,False)
-    #simulation([([0.8230967843932604, -0.7453174218438501, 0.8917092089465866, -0.4079208369348286, -0.5546040184858618, 0.7306872594423566, 0.014909991559707958, -0.635612746434195, -0.844577464689336, 0.6672191354552035, 0.003331966953915133, 0.2675903938300723, -0.5597274078152055, 0.16162258824077114], [-0.7829257499093809, 0.8040966148387343, 0.7525830897474568, -0.03161854960599442, -0.4721831659520046, -0.17409637874275852, 0.5768274685479786, 0.8093912845317912, 0.39646591851858237, -0.903115946067282, 0.5194923520256478, 0.32516388095738424, 0.12272094697158176, 0.17585067881])],300,1,False)
-    simulation([([0.016779830358950143, -0.26543611277685275, 0.015423499153895293, 0.21066865040353244, 0.19508515676110383, 0.009682903022187439], [-0.9219480521028645, 0.7621027543414551, -0.7620474845807588, 0.08662369406993697, 0.42696758594148787, 0.319365601070865])],300,1,False)
+    # simulation([([-0.04976292924609016, -0.008724116725703501, -0.7401463485876545, 0.43248756833343904, 0.7759648831140185, -0.6537053670636204, 0.04338862477524952, -0.594996721108846, -0.6537827477092351, -0.9131426434515788, 0.7556205997920529, 0.7200206126711672, -0.2237007743778341, 0.4970605052959205], [-0.9821296478649486, 0.8040966148387343, 0.9909274790237597, -0.03161854960599442, -0.4721831659520046, 0.6284661469556723, -0.8899192467370087, 0.8093912845317912, -0.2761572403868311, 0.012674057177946452, 0.7727940742798518, 0.5628421161551613, -0.4264608164795147, -0.7169140492391144])],300,1,False)
+    # simulation([([0.8230967843932604, -0.7453174218438501, 0.8917092089465866, -0.4079208369348286, -0.5546040184858618, 0.7306872594423566, 0.014909991559707958, -0.635612746434195, -0.844577464689336, 0.6672191354552035, 0.003331966953915133, 0.2675903938300723, -0.5597274078152055, 0.16162258824077114], [-0.7829257499093809, 0.8040966148387343, 0.7525830897474568, -0.03161854960599442, -0.4721831659520046, -0.17409637874275852, 0.5768274685479786, 0.8093912845317912, 0.39646591851858237, -0.903115946067282, 0.5194923520256478, 0.32516388095738424, 0.12272094697158176, 0.17585067881])],300,1,False)
+    # simulation([([-0.14172827785373787, -0.7453174218438501, 0.8917092089465866, -0.4079208369348286, -0.5546040184858618, 0.7306872594423566, 0.014909991559707958, -0.635612746434195, -0.844577464689336, 0.6672191354552035, 0.003331966953915133, 0.2675903938300723, -0.5597274078152055, 0.16162258824077114], [-0.7829257499093809, 0.7512907919337186, 0.9376649860125887, -0.03161854960599442, -0.4721831659520046, -0.30853062914210816, -0.8899192467370087, 0.8093912845317912, 0.39646591851858237, 0.4940918133172725, 0.5194923520256478, 0.32516388095738424, 0.12272094697158176, 0.1758506788])],300,1,False)
 
+    #best
+    simulation([([-0.14172827785373787, -0.7453174218438501, 0.8917092089465866, -0.4079208369348286, -0.5546040184858618, 0.7306872594423566, 0.014909991559707958, -0.635612746434195, -0.844577464689336, 0.6672191354552035, 0.003331966953915133, 0.2675903938300723, -0.5597274078152055, 0.16162258824077114], [-0.7829257499093809, 0.7512907919337186, 0.9376649860125887, -0.03161854960599442, -0.4721831659520046, -0.30853062914210816, -0.8899192467370087, 0.8093912845317912, 0.39646591851858237, 0.4940918133172725, 0.5194923520256478, 0.32516388095738424, 0.12272094697158176, 0.175850678])],300,1,False)
 
     #            [random.random()-1 for i in range(n)],
     #            [random.random()-1 for i in range(n)])], 60, 1, False)
     # simulation(test1,60,25,False)
     # simulation(test2,60,25,False)
     # simulation(test1 + test2,60,25,False)
-    #simulation([([-0.7828140346735355, -0.2383063058394761, -0.30214756569585544, 0.3835617415327921, -0.7838038598153994, 0.8472082226406816, -0.9165282132645329, 0.38765038101366867, 0.4168883945053148, -0.4046033304890575, 0.5585965626702873, -0.14095180014502917], [0.48258927386216177, -0.7256455385907834, -0.8086211362031719, 0.8496228486181712, 0.0012546912947057898, 0.2685642039609566, 0.5569387903255725, 0.1894636907138254, 0.12347936666927484, 0.4528980825446496, -0.7548460753673705, 0.7457373844677293])],60,1,False)
+    # simulation([([-0.7828140346735355, -0.2383063058394761, -0.30214756569585544, 0.3835617415327921, -0.7838038598153994, 0.8472082226406816, -0.9165282132645329, 0.38765038101366867, 0.4168883945053148, -0.4046033304890575, 0.5585965626702873, -0.14095180014502917], [0.48258927386216177, -0.7256455385907834, -0.8086211362031719, 0.8496228486181712, 0.0012546912947057898, 0.2685642039609566, 0.5569387903255725, 0.1894636907138254, 0.12347936666927484, 0.4528980825446496, -0.7548460753673705, 0.7457373844677293])],600,1,False)

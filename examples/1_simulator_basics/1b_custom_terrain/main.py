@@ -13,6 +13,7 @@ from revolve2.modular_robot_simulation import (
     Terrain,
     simulate_scenes,
 )
+from revolve2.standards.interactive_objects import Ball
 from revolve2.simulation.scene import AABB, Color, Pose
 from revolve2.simulation.scene.geometry import GeometryBox, GeometryPlane
 from revolve2.simulation.scene.geometry.textures import MapType

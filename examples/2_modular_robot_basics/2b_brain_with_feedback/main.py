@@ -72,11 +72,11 @@ class ANNBrainInstance(BrainInstance):
         logging.info(f"orientation: {imu_state.orientation}")
         logging.info(f"angular rate: {imu_state.angular_rate}")
         logging.info(f"specific force: {imu_state.specific_force}")
-
+    
         # Here you can implement your controller.
         # The current controller does nothing except for always settings the joint positions to 0.5.
         for active_hinge, sensor in zip(self.active_hinges, sensors):
-            target = 0.5
+            target = 0.0
             control_interface.set_active_hinge_target(active_hinge, target)
 
 
