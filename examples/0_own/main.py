@@ -12,7 +12,7 @@ from revolve2.standards import terrains
 from revolve2.standards.simulation_parameters import make_standard_batch_parameters
 from revolve2.standards import fitness_functions, modular_robots_v2, terrains
 from revolve2.standards.modular_robots_v2 import gecko_v2
-import numpy as np
+import numpy as npx
 from revolve2.simulation.scene import AABB, Color, Pose
 from revolve2.standards.interactive_objects import Ball      
 from revolve2.modular_robot.body.base import ActiveHinge
