@@ -95,7 +95,7 @@ class CustomBrainInstance(BrainInstance):
             self.steer = False
         else:
             for active_hinge, sensor in zip(right, sensors):
-                control_interface.set_active_hinge_target(active_hinge, 0.9)
+                control_interface.set_active_hinge_target(active_hinge, 0.3)
 
             for active_hinge, sensor in zip(left, sensors):
                 control_interface.set_active_hinge_target(active_hinge, -0.3)
@@ -199,7 +199,7 @@ def main() -> None:
         hinge_mapping=hinge_mapping,
         run_duration=100,
         control_frequency=2,
-        initial_hinge_positions={UUIDKey(active_hinge): -0.0 for active_hinge in active_hinges},
+        initial_hinge_positions={UUIDKey(active_hinge): 0.9 for active_hinge in active_hinges},
         inverse_servos={0: True, 1: True},
     )
 
@@ -214,7 +214,7 @@ def main() -> None:
         hostname="10.15.3.45",  # "Set the robot IP here.
         debug=False,
         on_prepared=on_prepared,
-        display_camera_view=True,
+        display_camera_view=False,
     )
     """
     Note that theoretically if you want the robot to be self controlled and not dependant on a external remote, you can run this script on the robot locally.

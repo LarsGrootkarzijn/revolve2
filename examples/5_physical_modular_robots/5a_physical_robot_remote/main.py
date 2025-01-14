@@ -98,7 +98,7 @@ def main() -> None:
         modular_robot=robot,
         hinge_mapping=hinge_mapping,
         run_duration=30,
-        control_frequency=20,
+        control_frequency=2,
         initial_hinge_positions={UUIDKey(active_hinge): 0.0 for active_hinge in hinges},
         inverse_servos={},
     )
@@ -112,7 +112,7 @@ def main() -> None:
     print("Initializing robot..")
     run_remote(
         config=config,
-        hostname="localhost",  # "Set the robot IP here.
+        hostname="10.15.3.45",  # "Set the robot IP here.
         debug=True,
         on_prepared=on_prepared,
         display_camera_view=False,
