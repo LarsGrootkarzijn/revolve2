@@ -13,6 +13,7 @@ from revolve2.standards.simulation_parameters import make_standard_batch_paramet
 from revolve2.standards import fitness_functions, modular_robots_v2, terrains
 from revolve2.standards.modular_robots_v2 import gecko_v2
 import numpy as npx
+from revolve2.modular_robot.body.sensors import CameraSensor
 from revolve2.simulation.scene import AABB, Color, Pose
 from revolve2.standards.interactive_objects import Ball      
 from revolve2.modular_robot.body.base import ActiveHinge
@@ -225,6 +226,9 @@ def main() -> None:
 
     body = gecko_v2()
 
+    body.core.add_sensor(
+        CameraSensor(position=Vector3([0, 0, 0]), camera_size=(480, 640))
+    )
     """Every module on the robot can have sensors, to add them you do the following: """
     # Add an IMU Sensor to the core.
 

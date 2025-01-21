@@ -17,15 +17,18 @@ from revolve2.modular_robot.body.v2 import ActiveHingeV2, BodyV2, BrickV2
 from revolve2.modular_robot_physical import Config, UUIDKey
 from revolve2.modular_robot_physical.remote import run_remote
 from revolve2.standards.modular_robots_v2 import gecko_v2
+from revolve2.modular_robot.body.sensors import CameraSensor
 
 class CustomBrainInstance(BrainInstance):
     """ANN brain instance."""
 
     active_hinges: list[ActiveHinge]
     steer = False
+    camera: CameraSensor
     def __init__(
         self,
-        active_hinges: list[ActiveHinge]
+        active_hinges: list[ActiveHinge],
+        camera: CameraSensor
     ) -> None:
         """
         Initialize the Object.
@@ -33,6 +36,7 @@ class CustomBrainInstance(BrainInstance):
         :param active_hinges: The active hinges to control.
         :param imu_sensor: The IMU sensor.
         """
+        self.camera = camera
         self.active_hinges = active_hinges
 
     def control(
@@ -95,7 +99,7 @@ class CustomBrainInstance(BrainInstance):
             self.steer = False
         else:
             for active_hinge, sensor in zip(right, sensors):
-                control_interface.set_active_hinge_target(active_hinge, 0.3)
+                control_interface.set_active_hinge_target(active_hinge, 0.0)
 
             for active_hinge, sensor in zip(left, sensors):
                 control_interface.set_active_hinge_target(active_hinge, -0.3)
@@ -111,10 +115,11 @@ class CustomBrain(Brain):
     """The ANN brain."""
 
     active_hinges: list[ActiveHinge]
-
+    camera: CameraSensor
     def __init__(
         self,
-        active_hinges: list[ActiveHinge]
+        active_hinges: list[ActiveHinge],
+        camera: CameraSensor
     ) -> None:
         """
         Initialize the Object.
@@ -123,7 +128,7 @@ class CustomBrain(Brain):
         :param imu_sensor: The IMU sensor.
         """
         self.active_hinges = active_hinges
-
+        self.camera = camera
     def make_instance(self) -> BrainInstance:
         """
         Create an instance of this brain.
@@ -131,6 +136,7 @@ class CustomBrain(Brain):
         :returns: The created instance.
         """
         return CustomBrainInstance(
+            camera=self.camera,
             active_hinges=self.active_hinges
         )
 
@@ -149,12 +155,16 @@ def main() -> None:
     Of course, you can replace this with your own robot, such as one you have optimized using an evolutionary algorithm.
     """
     body = gecko_v2()
+    body.core.add_sensor(
+        CameraSensor(position=Vector3([0, 0, 0]), camera_size=(480, 640))
+    )
     # Create a brain for the robot.
     active_hinges = body.find_modules_of_type(ActiveHinge)
-    
+    camera = body.find_modules_of_type(CameraSensor)
     # Create the custom brain for the robot.
     brain = CustomBrain(
-        active_hinges
+        active_hinges,
+        camera
     )
     
     # Combine the body and brain into a moduflar robot.
@@ -199,7 +209,7 @@ def main() -> None:
         hinge_mapping=hinge_mapping,
         run_duration=100,
         control_frequency=2,
-        initial_hinge_positions={UUIDKey(active_hinge): 0.9 for active_hinge in active_hinges},
+        initial_hinge_positions={UUIDKey(active_hinge): 0.0 for active_hinge in active_hinges},
         inverse_servos={0: True, 1: True},
     )
 

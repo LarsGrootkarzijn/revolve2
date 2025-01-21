@@ -45,7 +45,7 @@ def make_body() -> (
     )
     """Here we add a camera sensor to the core. If you don't have a physical camera attached, uncomment this line."""
     body.core.add_sensor(
-        CameraSensor(position=Vector3([0, 0, 0]), camera_size=(480, 640))
+        CameraSensor(position=Vector3([0, 0, 0]), camera_size=(640, 320))
     )
     return body, active_hinges
 
@@ -115,7 +115,7 @@ def main() -> None:
         hostname="10.15.3.45",  # "Set the robot IP here.
         debug=True,
         on_prepared=on_prepared,
-        display_camera_view=False,
+        display_camera_view=True,
     )
     """
     Note that theoretically if you want the robot to be self controlled and not dependant on a external remote, you can run this script on the robot locally.
